@@ -57,7 +57,7 @@ func (h *OrderHandler) CreateOrderWithOutGoroutine(w http.ResponseWriter, r *htt
 		return
 	}
 
-	orderID, err := h.service.CreateOrder(ctx, order)
+	orderID, err := h.service.CreateOrderWithOutGoroutine(ctx, order)
 	if err != nil {
 		handleError(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -92,7 +92,7 @@ func (h *OrderHandler) CreateOrder(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	orderID, err := h.service.CreateOrderWithGoroutine(order)
+	orderID, err := h.service.CreateOrder(order)
 	if err != nil {
 		handleError(w, err.Error(), http.StatusInternalServerError)
 		return

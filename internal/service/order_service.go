@@ -11,8 +11,8 @@ import (
 )
 
 type OrderService interface {
-	CreateOrder(ctx context.Context, order model.Order) (int, error)
-	CreateOrderWithGoroutine(order model.Order) (int, error)
+	CreateOrderWithOutGoroutine(ctx context.Context, order model.Order) (int, error)
+	CreateOrder(order model.Order) (int, error)
 	GetOrder(ctx context.Context, id int) (model.Order, error)
 	GetOrders(ctx context.Context, page, size int) (model.OrdersResponse, error)
 	UpdateOrderStatus(ctx context.Context, id int, status string) error
@@ -33,11 +33,11 @@ func NewOrderService(repo repository.OrderRepository, config *config.Config) Ord
 	}
 }
 
-func (s *orderService) CreateOrder(ctx context.Context, order model.Order) (int, error) {
+func (s *orderService) CreateOrderWithOutGoroutine(ctx context.Context, order model.Order) (int, error) {
 	return s.repo.CreateOrder(ctx, order)
 }
 
-func (s *orderService) CreateOrderWithGoroutine(order model.Order) (int, error) {
+func (s *orderService) CreateOrder(order model.Order) (int, error) {
 	resultChannel := make(chan struct {
 		orderID int
 		err     error
